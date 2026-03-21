@@ -15,8 +15,7 @@ Project Requirement
 - user can login / register to website
 - each user can see only they todo list
 - responsive design
-<br>
-
+Date
 - start 21/03/2026
 - deadline 22/05/2026
 </h1>
