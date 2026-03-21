@@ -1,2 +1,20 @@
-# Web
-<h1 class="text-bold">Hello there, My name is Thananon you can call me jame</h1>
+# Project Todo app
+<h1 class="text-bold">
+stack
+- express.js
+- react + tailwindcss
+- postgres
+- typescript
+- GitHub
+
+Project Requirement
+- user can create & update & delete & read tasks in todo list
+- user can change status task in todo list
+- user can modify info such as title, description
+- user can login / register to website
+- Each user can see only they todo list
+- responsive design
+
+deadline
+22/05/2026
+</h1>
