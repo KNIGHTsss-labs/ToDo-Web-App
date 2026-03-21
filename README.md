@@ -1,5 +1,6 @@
 # Project Todo app
 <h1 class="text-bold">
+
 stack
 - express.js
 - react + tailwindcss
@@ -12,7 +13,7 @@ Project Requirement
 - user can change status task in todo list
 - user can modify info such as title, description
 - user can login / register to website
-- Each user can see only they todo list
+- each user can see only they todo list
 - responsive design
 
 deadline
