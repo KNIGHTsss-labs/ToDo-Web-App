@@ -1,0 +1,26 @@
+# --- Dependencies ---
+node_modules/
+jspm_packages/
+
+# --- Environment Variables (สำคัญมาก!) ---
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# --- TypeScript / Build ---
+dist/
+build/
+*.tsbuildinfo
+
+# --- OS Specific (Windows & Mac) ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --- IDEs (ถ้าใช้ VS Code หรือ IntelliJ) ---
+.vscode/
+.idea/
+*.swp
+*.bak
