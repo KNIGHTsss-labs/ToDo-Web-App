@@ -143,9 +143,16 @@
         
         <br>
         
-        <button class="text-3xl text-center font-bold m-3 p-3 border">
-            Click Me!
-        </button>
+        <div class="flex gap-2 mb-6">
+            <input type="text" id="usernameInput" placeholder="พิมพ์ชื่อผู้ใช้ (เช่น jame_dev)" 
+                class="border p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button onclick="getMyTasks()" 
+                    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                ดูรายการของฉัน
+            </button>
+        </div>
+
+        <div id="taskList" class="space-y-2"></div>
     </div>
 
     <script src="script.js"></script>
