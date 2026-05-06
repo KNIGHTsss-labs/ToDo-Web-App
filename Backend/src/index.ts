@@ -1,10 +1,12 @@
 import cors from 'cors';
+import jwt from 'jsonwebtoken';
 
 import express, { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 
 import bcrypt from 'bcrypt';
 
+const JWT_SECRET = 'my_super_secret_key_123'
 const prisma = new PrismaClient();
 const app = express();
 app.use(cors()); // 2. บรรทัดนี้ต้องอยู่ "ก่อน" app.get หรือ app.post ทุกอันครับ
@@ -100,6 +102,12 @@ app.post('/login', async (req, res) => {
 
     if (isMatch) {
         // Login สำเร็จ! (เดี๋ยวเราจะมาทำเรื่องการส่ง Token ต่อ)
+        const token = jwt.sign(
+            { id: user.id, username: user.username},
+            JWT_SECRET,
+            {expiresIn: '7d'}
+        );
+
         res.json({ message: "Login สำเร็จ!", userId: user.id });
     } else {
         res.status(401).json({ error: "รหัสผ่านไม่ถูกต้อง" });
