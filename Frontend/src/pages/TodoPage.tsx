@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Spinner from '../components/Spinner'
+import ConfirmModal from '../components/ConfirmModal'
 import { getTasksApi, createTaskApi, updateTaskApi, toggleTaskApi, deleteTaskApi } from '../services/api'
 
 interface Task {
@@ -22,6 +24,9 @@ export default function TodoPage() {
     const [editTitle, setEditTitle] = useState('')
     const [editDesc, setEditDesc]   = useState('')
     const [filter, setFilter]       = useState<'all' | 'active' | 'done'>('all')
+    const [username, setUsername] = useState('')
+    const [deleteId, setDeleteId] = useState<number | null>(null)
+    const [deleteTitle, setDeleteTitle] = useState('')
 
     useEffect(() => {
         if (!localStorage.getItem('token')) { navigate('/login'); return }
@@ -37,6 +42,17 @@ export default function TodoPage() {
         } catch { setError('โหลด task ไม่สำเร็จ') }
         finally { setLoading(false) }
     }
+
+    useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (!token) { navigate('/login'); return }
+
+    // ← add these 2 lines:
+    const payload = JSON.parse(atob(token.split('.')[1]))
+    setUsername(payload.username)
+
+    fetchTasks()
+}, [])
 
     async function handleCreate() {
         if (!newTitle.trim()) return
@@ -65,10 +81,16 @@ export default function TodoPage() {
         setEditId(null)
     }
 
-    async function handleDelete(id: number) {
-        if (!window.confirm('ลบ task นี้?')) return
-        await deleteTaskApi(id)
-        setTasks(prev => prev.filter(t => t.id !== id))
+    async function askDelete(task: Task) {
+    setDeleteId(task.id)        // remember which task
+    setDeleteTitle(task.title)  // remember its name to show in modal
+    }
+
+    async function confirmDelete() {
+    if (!deleteId) return
+    await deleteTaskApi(deleteId)
+    setTasks(prev => prev.filter(t => t.id !== deleteId))
+    setDeleteId(null)  // close modal
     }
 
     function handleLogout() {
@@ -129,8 +151,11 @@ export default function TodoPage() {
                 {/* Header */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '28px' }}>
                     <div>
+                        <p style={{ fontSize: '12px', color: '#3a3a5a', margin: '0 0 4px' }}>
+                            Welcome back,
+                        </p>
                         <h1 style={{ fontSize: '22px', fontWeight: 600, color: '#f1f0ff', letterSpacing: '-0.02em', margin: 0 }}>
-                            My tasks
+                            {username} 👋
                         </h1>
                         <p style={{ fontSize: '12px', color: '#3a3a5a', marginTop: '4px' }}>
                             {doneCount} / {tasks.length} completed
@@ -214,7 +239,7 @@ export default function TodoPage() {
 
                 {/* Task list */}
                 {loading ? (
-                    <p style={{ textAlign: 'center', color: '#3a3a5a', fontSize: '14px', padding: '60px 0' }}>Loading...</p>
+                    <Spinner />
                 ) : filtered.length === 0 ? (
                     <p style={{ textAlign: 'center', color: '#3a3a5a', fontSize: '14px', padding: '60px 0' }}>
                         {filter === 'all' ? 'No tasks yet. Add one above!' : `No ${filter} tasks.`}
@@ -301,7 +326,7 @@ export default function TodoPage() {
                                                 color: '#3a3a5a', cursor: 'pointer',
                                                 padding: '4px 6px', borderRadius: '6px', fontSize: '13px',
                                             }}>✏️</button>
-                                            <button onClick={() => handleDelete(task.id)} style={{
+                                            <button onClick={() => askDelete(task)} style={{
                                                 background: 'none', border: 'none',
                                                 color: '#3a3a5a', cursor: 'pointer',
                                                 padding: '4px 6px', borderRadius: '6px', fontSize: '13px',
@@ -314,6 +339,14 @@ export default function TodoPage() {
                     </div>
                 )}
             </div>
+            {/* Delete confirm modal */}
+            {deleteId && (
+                <ConfirmModal
+                    message={`"${deleteTitle}" will be permanently deleted.`}
+                    onConfirm={confirmDelete}
+                    onCancel={() => setDeleteId(null)}
+                />
+            )}
         </div>
     )
 }
