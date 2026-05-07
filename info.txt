@@ -1,0 +1,62 @@
+# Summary of threats
+Brute force attack    → rate limiting ✅
+Weird input           → input validation ✅
+Weak JWT secret       → strong random secret ✅
+No HTTPS              → deploy to Render/Vercel
+Open CORS             → restrict to your domain
+Token after logout    → token blacklist (advanced)
+
+# Full summary — everything you learned
+Phase 1 — Understanding the architecture
+    Frontend (React) ↔ Backend (Express) ↔ Database (PostgreSQL)
+    learned: how the 3 layers connect and why they're separate ✅
+
+Phase 2 — Backend foundations
+    Built Express server
+    Connected Prisma to PostgreSQL
+    learned: what an API is, what routes are, HTTP methods 
+
+Phase 3 — Authentication
+    Built /register with bcrypt password hashing
+    Built /login with JWT tokens
+    Built authenticate middleware
+    learned:
+        → Never store real passwords ✅
+        → What hashing is and why it's one-way ✅
+        → What a JWT token is (the wristband analogy) ✅
+        → What middleware is (the security guard) ✅
+
+Phase 4 — Task CRUD
+    Built 5 protected routes
+    learned:
+        → GET / POST / PUT / PATCH / DELETE ✅
+        → How to protect routes with middleware ✅
+        → req.user.id — knowing who is logged in ✅
+        → Debugging with console.error ✅
+
+Phase 5 — React Frontend
+    Set up Vite + React + React Router
+    Built LoginPage with register/login forms
+    Built TodoPage with full CRUD
+    learned:
+        → useState — remembering values
+        → useEffect — running code on page load
+        → fetch() — talking to your backend ✅
+        → localStorage — storing the token in browser ✅
+        → Conditional rendering — showing/hiding things ✅
+        → React Router — navigating between pages
+
+Phase 6 — Polish & Features
+    Added spinner component
+    Added username from JWT
+    Added custom delete modal
+    Added due dates
+    Added priority
+    Added search bar
+    learned:
+        → Reusable components (Spinner, ConfirmModal) ✅
+        → Reading data from JWT on frontend
+        → atob() — decoding base64
+        → Prisma migrations (db push + generate) ✅
+        → Filtering arrays in React
+        → Props — passing data between components

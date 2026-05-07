@@ -8,6 +8,8 @@ import { PrismaPg } from '@prisma/adapter-pg'
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
+import rateLimit from 'express-rate-limit'
+
 // Explicitly set env before Prisma loads
 process.env.DATABASE_URL = process.env.DATABASE_URL ?? ''
 
@@ -15,10 +17,17 @@ const JWT_SECRET = process.env.JWT_SECRET!
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL as String})
 const prisma = new PrismaClient({ adapter });
 const app = express();
-app.use(cors()); // 2. บรรทัดนี้ต้องอยู่ "ก่อน" app.get หรือ app.post ทุกอันครับ
+app.use(cors()); // allows all website to call your API
 app.use(express.json());
 
 const port = 3000;
+
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 20
+})
+app.use('/login', limiter)
+app.use('/register', limiter)
 
 // ─── AUTH ─────────────────────────────────────
 const authenticate = (req: any, res: Response, next: Function) => {
@@ -192,6 +201,8 @@ app.post('/register', async (req, res) => {
         if (!username || !password) {
             return res.status(400).json({ error: "กรุณากรอก username และ password" });
         }
+        if (username.lenght > 50) return res.status(400).json({ error: 'Username too long' })
+        if (password.lenght < 6) return res.status(400).json({ error: 'Password too short' })
         const existingUser = await prisma.users.findUnique({
             where: { username: username }
         });
