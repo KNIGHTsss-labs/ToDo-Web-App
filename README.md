@@ -21,5 +21,3 @@ Date
 - actually start 6/5/2026
 - deadline 22/05/2026
 </h1>
-URL render:
-https://todo-frontend-4yza.onrender.com
