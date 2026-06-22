@@ -76,3 +76,13 @@ All concept
 # About Security 
  - ssh keys (private/public key)
  - 
+-------------------------------------------------------
+Suggestion
+- ใช้ git เก็บ code
+Fronet
+- เปลี่ยน token local storage -> cookies
+Backend
+- rate limited ใช้กับทุกหน้า
+- index.ts is super file ควรแยกหน้าที่ต่าง ๆ ออกจากกัน เช่น route, controller, index
+Type
+- แยก type สำหรับแต่ละส่วน เช่น task.type.ts
